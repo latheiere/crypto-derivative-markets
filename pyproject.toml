@@ -1,0 +1,90 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "crypto-derivative-markets"
+dynamic = ["version"]
+description = "Venue-neutral contracts for describing crypto-derivative economics"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["crypto", "derivatives", "market-data", "schema"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[[project.authors]]
+name = "Crypto Derivative Markets contributors"
+
+[project.urls]
+Homepage = "https://github.com/latheiere/crypto-derivative-markets"
+Repository = "https://github.com/latheiere/crypto-derivative-markets"
+Issues = "https://github.com/latheiere/crypto-derivative-markets/issues"
+Changelog = "https://github.com/latheiere/crypto-derivative-markets/blob/main/CHANGELOG.md"
+Documentation = "https://github.com/latheiere/crypto-derivative-markets/tree/main/docs"
+
+[project.optional-dependencies]
+dev = [
+  "build>=1.2,<2",
+  "jsonschema>=4.23,<5",
+  "mypy>=1.11,<2",
+  "pytest>=8.3,<9",
+  "ruff>=0.8,<1",
+  "twine>=5.1,<7",
+  "types-jsonschema>=4.23,<5",
+]
+
+[tool.hatch.version]
+path = "src/cdm/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cdm"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/.github",
+  "/docs",
+  "/src",
+  "/tests",
+  "/tools",
+  "/CHANGELOG.md",
+  "/CODE_OF_CONDUCT.md",
+  "/CONTRIBUTING.md",
+  "/LICENSE",
+  "/Makefile",
+  "/PUBLISHING.md",
+  "/README.md",
+  "/REQUIREMENTS.md",
+  "/SECURITY.md",
+  "/pyproject.toml",
+]
+
+[tool.pytest.ini_options]
+addopts = "--strict-config --strict-markers"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "SIM", "RUF"]
+ignore = ["UP006", "UP007", "UP035", "UP045"]
+
+[tool.mypy]
+python_version = "3.9"
+strict = true
+files = ["src", "tests", "tools"]

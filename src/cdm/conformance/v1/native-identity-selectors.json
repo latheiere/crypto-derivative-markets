@@ -1,0 +1,51 @@
+{
+  "vector_schema": "urn:cdm:conformance:1",
+  "schema_id": "urn:cdm:schema:native-identity-selector:1",
+  "valid": [
+    {
+      "name": "protocol-scoped instrument selector",
+      "value": {
+        "schema_id": "urn:cdm:schema:native-identity-selector:1",
+        "role": "instrument",
+        "namespace": "rest:instrument-catalog"
+      }
+    },
+    {
+      "name": "stream product-family selector",
+      "value": {
+        "schema_id": "urn:cdm:schema:native-identity-selector:1",
+        "role": "product_family",
+        "namespace": "websocket"
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "unsupported identity role",
+      "value": {
+        "schema_id": "urn:cdm:schema:native-identity-selector:1",
+        "role": "asset",
+        "namespace": "rest"
+      },
+      "error_code": "invalid_enum"
+    },
+    {
+      "name": "invalid protocol scope",
+      "value": {
+        "schema_id": "urn:cdm:schema:native-identity-selector:1",
+        "role": "instrument",
+        "namespace": "rest:InstrumentCatalog"
+      },
+      "error_code": "invalid_value"
+    },
+    {
+      "name": "namespace with trailing line break",
+      "value": {
+        "schema_id": "urn:cdm:schema:native-identity-selector:1",
+        "role": "instrument",
+        "namespace": "rest\n"
+      },
+      "error_code": "invalid_value"
+    }
+  ]
+}

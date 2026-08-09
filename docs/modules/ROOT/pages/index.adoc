@@ -1,0 +1,15 @@
+= Crypto Derivative Markets
+
+Crypto Derivative Markets, distributed as `crypto-derivative-markets` and imported as `cdm`,
+defines venue-neutral economic contracts for crypto derivatives.
+
+The component provides immutable Python values, versioned JSON Schemas, strict codecs,
+classification, capability-specific descriptor assessment, protocol-scoped identity references,
+exact neutral conversions, and portable conformance vectors. It is a leaf library with no runtime
+dependencies.
+
+Use xref:concepts/boundary.adoc[Library boundary] to decide whether a concern belongs here. Use
+xref:reference/vocabulary.adoc[Generated vocabulary] for exact wire values and formula identifiers.
+
+The repository-level `REQUIREMENTS.md` is the normative contract. These pages explain that contract
+without replacing it.

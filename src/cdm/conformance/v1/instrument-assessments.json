@@ -1,0 +1,69 @@
+{
+  "vector_schema": "urn:cdm:conformance:1",
+  "schema_id": "urn:cdm:schema:instrument-assessment:1",
+  "valid": [
+    {
+      "name": "operation-specific complete assessment",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-assessment:1",
+        "capability": "classification",
+        "state": "complete",
+        "issues": []
+      }
+    },
+    {
+      "name": "incomplete assessment with structured issue",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-assessment:1",
+        "capability": "open_interest_conversion",
+        "state": "incomplete",
+        "issues": [
+          {
+            "code": "missing_attribute",
+            "path": "$.contract_value.amount",
+            "message": "required economic metadata is missing"
+          }
+        ]
+      }
+    },
+    {
+      "name": "complete profile assessment",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-assessment:1",
+        "capability": "complete_profile",
+        "state": "complete",
+        "issues": [],
+        "profile": {
+          "schema_id": "urn:cdm:schema:instrument-profile:1",
+          "instrument_kind": "future",
+          "contract_value": { "amount": "1", "unit": "base" },
+          "settlement": { "method": "cash", "asset_relationship": "quote" },
+          "margin_asset_relationship": "quote",
+          "funding": { "mechanism": "none" }
+        }
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "complete profile assessment without profile",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-assessment:1",
+        "capability": "complete_profile",
+        "state": "complete",
+        "issues": []
+      },
+      "error_code": "inconsistent_assessment"
+    },
+    {
+      "name": "incomplete assessment without issues",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-assessment:1",
+        "capability": "classification",
+        "state": "incomplete",
+        "issues": []
+      },
+      "error_code": "inconsistent_assessment"
+    }
+  ]
+}

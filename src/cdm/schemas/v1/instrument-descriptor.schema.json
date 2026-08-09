@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cdm:schema:instrument-descriptor:1",
+  "title": "CDM incomplete instrument descriptor v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_id"],
+  "properties": {
+    "schema_id": { "const": "urn:cdm:schema:instrument-descriptor:1" },
+    "instrument_kind": { "enum": ["perpetual_swap", "future"] },
+    "contract_value": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "amount": {
+          "type": "string",
+          "pattern": "^(?:0\\.[0-9]*[1-9]|[1-9][0-9]*(?:\\.[0-9]*[1-9])?)(?![\\s\\S])"
+        },
+        "unit": { "enum": ["base", "quote"] }
+      }
+    },
+    "settlement": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "method": { "enum": ["cash", "physical"] },
+        "asset_relationship": { "enum": ["base", "quote", "third"] }
+      }
+    },
+    "margin_asset_relationship": {
+      "enum": ["base", "quote", "settlement", "third"]
+    },
+    "funding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mechanism": { "enum": ["none", "periodic", "continuous"] },
+        "interval_seconds": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cdm:schema:datapoint:1",
+  "title": "CDM datapoint definition v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_id", "kind", "temporal_mode", "unit"],
+  "properties": {
+    "schema_id": { "const": "urn:cdm:schema:datapoint:1" },
+    "kind": {
+      "enum": [
+        "open_interest.contract_count",
+        "open_interest.base_quantity",
+        "open_interest.notional",
+        "funding.indicative_rate",
+        "funding.next_rate",
+        "funding.settled_rate",
+        "funding.interval",
+        "funding.premium_rate",
+        "funding.interest_rate",
+        "funding.rate_floor",
+        "funding.rate_cap"
+      ]
+    },
+    "temporal_mode": { "enum": ["current", "next", "settled", "historical"] },
+    "unit": {
+      "enum": ["contract_count", "base_quantity", "notional", "rate_fraction", "duration_seconds"]
+    },
+    "denomination": { "enum": ["base", "quote", "settlement", "reporting"] }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "kind": { "const": "open_interest.contract_count" } } },
+      "then": {
+        "properties": {
+          "unit": { "const": "contract_count" },
+          "temporal_mode": { "enum": ["current", "historical"] }
+        },
+        "not": { "required": ["denomination"] }
+      }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "open_interest.base_quantity" } } },
+      "then": {
+        "properties": {
+          "unit": { "const": "base_quantity" },
+          "temporal_mode": { "enum": ["current", "historical"] }
+        },
+        "not": { "required": ["denomination"] }
+      }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "open_interest.notional" } } },
+      "then": {
+        "properties": {
+          "unit": { "const": "notional" },
+          "temporal_mode": { "enum": ["current", "historical"] }
+        },
+        "required": ["denomination"]
+      }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "funding.indicative_rate" } } },
+      "then": {
+        "properties": {
+          "unit": { "const": "rate_fraction" },
+          "temporal_mode": { "const": "current" }
+        },
+        "not": { "required": ["denomination"] }
+      }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "funding.next_rate" } } },
+      "then": {
+        "properties": {
+          "unit": { "const": "rate_fraction" },
+          "temporal_mode": { "const": "next" }
+        },
+        "not": { "required": ["denomination"] }
+      }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "funding.settled_rate" } } },
+      "then": {
+        "properties": {
+          "unit": { "const": "rate_fraction" },
+          "temporal_mode": { "enum": ["settled", "historical"] }
+        },
+        "not": { "required": ["denomination"] }
+      }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "funding.interval" } } },
+      "then": {
+        "properties": {
+          "unit": { "const": "duration_seconds" },
+          "temporal_mode": { "enum": ["current", "historical"] }
+        },
+        "not": { "required": ["denomination"] }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "enum": ["funding.premium_rate", "funding.interest_rate"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "unit": { "const": "rate_fraction" },
+          "temporal_mode": { "enum": ["current", "historical"] }
+        },
+        "not": { "required": ["denomination"] }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": { "enum": ["funding.rate_floor", "funding.rate_cap"] }
+        }
+      },
+      "then": {
+        "properties": {
+          "unit": { "const": "rate_fraction" },
+          "temporal_mode": { "const": "current" }
+        },
+        "not": { "required": ["denomination"] }
+      }
+    }
+  ]
+}

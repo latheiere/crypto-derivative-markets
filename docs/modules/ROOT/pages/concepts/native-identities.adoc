@@ -1,0 +1,31 @@
+= Native identity references
+
+Native identity values let independently deployed integrations correlate provider-native payload
+values without adding those values to the economic descriptor. `InstrumentReferenceV1` contains an
+`InstrumentDescriptorV1` and an optional ordered tuple of `NativeIdentityV1` values. CDM validates
+and carries the tuple but does not discover, map, or interpret its values.
+
+Each identity has exactly three fields:
+
+`role`:: Semantic use of the value: instrument, pair, underlying, index, settlement asset, product
+family, or an explicitly unmodeled other role.
+`namespace`:: Protocol identity domain. A namespace starts with `rest`, `websocket`, `fix`, or
+`rpc` and may add lowercase neutral scopes separated by `:`.
+`value`:: Non-empty opaque native value.
+
+Scopes distinguish multiple identity domains within one protocol. They describe a payload or
+endpoint function, never a concrete provider, listing, catalog instance, or service. The exact
+namespace grammar is generated in the vocabulary reference.
+
+== Selection
+
+`NativeIdentitySelectorV1` contains an exact role and namespace. `select_native_identity()` returns
+a `NativeIdentitySelectionV1` whose status follows match cardinality:
+
+* `missing` for no match
+* `unique` for one match
+* `ambiguous` for multiple matches
+
+The source tuple retains evidence order, but order never resolves ambiguity. Consumers must treat an
+ambiguous result as a metadata gap or apply an explicit policy outside CDM. Native identities never
+affect descriptor assessment, classification, scenario keys, datapoint meaning, or conversion.

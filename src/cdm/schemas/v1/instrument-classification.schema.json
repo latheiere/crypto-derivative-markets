@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cdm:schema:instrument-classification:1",
+  "title": "CDM instrument classification v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_id", "payoff_family", "maturity_family"],
+  "properties": {
+    "schema_id": { "const": "urn:cdm:schema:instrument-classification:1" },
+    "payoff_family": { "enum": ["linear", "inverse", "quanto", "other"] },
+    "maturity_family": { "enum": ["open_ended", "fixed_expiry"] }
+  }
+}

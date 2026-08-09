@@ -1,0 +1,56 @@
+{
+  "vector_schema": "urn:cdm:conformance:1",
+  "schema_id": "urn:cdm:schema:datapoint:1",
+  "valid": [
+    {
+      "name": "current contract count",
+      "value": {
+        "schema_id": "urn:cdm:schema:datapoint:1",
+        "kind": "open_interest.contract_count",
+        "temporal_mode": "current",
+        "unit": "contract_count"
+      }
+    },
+    {
+      "name": "historical reporting notional",
+      "value": {
+        "schema_id": "urn:cdm:schema:datapoint:1",
+        "kind": "open_interest.notional",
+        "temporal_mode": "historical",
+        "unit": "notional",
+        "denomination": "reporting"
+      }
+    },
+    {
+      "name": "settled funding rate",
+      "value": {
+        "schema_id": "urn:cdm:schema:datapoint:1",
+        "kind": "funding.settled_rate",
+        "temporal_mode": "settled",
+        "unit": "rate_fraction"
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "notional without denomination",
+      "value": {
+        "schema_id": "urn:cdm:schema:datapoint:1",
+        "kind": "open_interest.notional",
+        "temporal_mode": "current",
+        "unit": "notional"
+      },
+      "error_code": "missing_denomination"
+    },
+    {
+      "name": "next rate with current semantics",
+      "value": {
+        "schema_id": "urn:cdm:schema:datapoint:1",
+        "kind": "funding.next_rate",
+        "temporal_mode": "current",
+        "unit": "rate_fraction"
+      },
+      "error_code": "inconsistent_temporal_mode"
+    }
+  ]
+}

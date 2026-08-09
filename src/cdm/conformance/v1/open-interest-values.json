@@ -1,0 +1,34 @@
+{
+  "vector_schema": "urn:cdm:conformance:1",
+  "schema_id": "urn:cdm:schema:open-interest-value:1",
+  "valid": [
+    {
+      "name": "zero contract count",
+      "value": {
+        "schema_id": "urn:cdm:schema:open-interest-value:1",
+        "amount": "0",
+        "measure": "contract_count"
+      }
+    },
+    {
+      "name": "quote-denominated notional",
+      "value": {
+        "schema_id": "urn:cdm:schema:open-interest-value:1",
+        "amount": "125.5",
+        "measure": "notional",
+        "denomination": "quote"
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "negative open interest",
+      "value": {
+        "schema_id": "urn:cdm:schema:open-interest-value:1",
+        "amount": "-1",
+        "measure": "base_quantity"
+      },
+      "error_code": "invalid_value"
+    }
+  ]
+}

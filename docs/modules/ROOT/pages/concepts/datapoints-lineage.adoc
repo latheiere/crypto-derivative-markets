@@ -1,0 +1,31 @@
+= Datapoints and lineage
+
+`DataPointDefinitionV1` separates a datapoint's semantic kind, unit, temporal mode, and optional
+notional denomination. The model rejects combinations that would make the same name mean different
+things across integrations.
+
+Open interest distinguishes contract count, base quantity, and notional. A notional always states
+whether its denomination relates to base, quote, settlement, or a reporting unit.
+
+Funding distinguishes indicative, next, and settled rates. Formula components and interval evidence
+have separate canonical meanings.
+
+== Calculation lineage
+
+`MeasurementLineageV1` is an ordered chain rather than a single native-or-inferred label. A chain can
+record native reporting followed by exact canonical conversion, or a provider-defined formula
+followed by another conversion. Estimates remain distinguishable from exact steps.
+
+Every non-native step has a stable `method_id`. CDM owns identifiers for its neutral conversion
+formulas; an integrating library owns identifiers for calculations defined by an external protocol.
+
+== Funding time semantics
+
+`FundingSampleV1.observed_at` is an optional source-declared observation time. Retrieval time belongs
+to the acquisition envelope and must not be substituted when the source supplies no observation
+time. `effective_at` identifies when a next or settled sample applies.
+
+`FundingIntervalV1` distinguishes explicit duration, observed window, protocol schedule, and an
+unspecified interval. An observed window is represented by its source-declared UTC start and a
+positive integer duration, so its end and ordering are deterministic in both Python and JSON Schema.
+Schedule and unspecified values do not carry invented bounds.

@@ -1,0 +1,94 @@
+{
+  "vector_schema": "urn:cdm:conformance:1",
+  "schema_id": "urn:cdm:schema:instrument-reference:1",
+  "valid": [
+    {
+      "name": "descriptor without native identities",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-reference:1",
+        "descriptor": {
+          "schema_id": "urn:cdm:schema:instrument-descriptor:1"
+        }
+      }
+    },
+    {
+      "name": "descriptor with protocol-scoped identities",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-reference:1",
+        "descriptor": {
+          "schema_id": "urn:cdm:schema:instrument-descriptor:1",
+          "instrument_kind": "perpetual_swap"
+        },
+        "native_identities": [
+          {
+            "role": "instrument",
+            "namespace": "rest:instrument-catalog",
+            "value": "native-instrument-key"
+          },
+          {
+            "role": "settlement_asset",
+            "namespace": "rest:derivative-status",
+            "value": "native-settlement-key"
+          },
+          {
+            "role": "product_family",
+            "namespace": "websocket",
+            "value": "native-family-key"
+          }
+        ]
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "explicit empty identity array",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-reference:1",
+        "descriptor": {
+          "schema_id": "urn:cdm:schema:instrument-descriptor:1"
+        },
+        "native_identities": []
+      },
+      "error_code": "invalid_value"
+    },
+    {
+      "name": "duplicate exact identity",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-reference:1",
+        "descriptor": {
+          "schema_id": "urn:cdm:schema:instrument-descriptor:1"
+        },
+        "native_identities": [
+          {
+            "role": "pair",
+            "namespace": "rest",
+            "value": "native-pair-key"
+          },
+          {
+            "role": "pair",
+            "namespace": "rest",
+            "value": "native-pair-key"
+          }
+        ]
+      },
+      "error_code": "duplicate_identity"
+    },
+    {
+      "name": "unsupported protocol namespace",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-reference:1",
+        "descriptor": {
+          "schema_id": "urn:cdm:schema:instrument-descriptor:1"
+        },
+        "native_identities": [
+          {
+            "role": "instrument",
+            "namespace": "provider-api",
+            "value": "native-instrument-key"
+          }
+        ]
+      },
+      "error_code": "invalid_value"
+    }
+  ]
+}

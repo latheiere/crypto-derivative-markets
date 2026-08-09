@@ -1,0 +1,11 @@
+* xref:index.adoc[Overview]
+* Concepts
+** xref:concepts/boundary.adoc[Library boundary]
+** xref:concepts/instrument-vocabulary.adoc[Instrument vocabulary]
+** xref:concepts/native-identities.adoc[Native identity references]
+** xref:concepts/datapoints-lineage.adoc[Datapoints and lineage]
+** xref:concepts/compatibility.adoc[Compatibility]
+* Reference
+** xref:reference/python-api.adoc[Python API]
+** xref:reference/json-schemas.adoc[JSON Schemas]
+** xref:reference/vocabulary.adoc[Generated vocabulary]

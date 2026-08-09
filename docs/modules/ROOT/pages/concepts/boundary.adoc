@@ -1,0 +1,28 @@
+= Library boundary
+
+CDM owns economic language shared across independently deployed Python libraries and services. It
+does not own the systems that discover, identify, acquire, store, or distribute market data.
+
+== Included
+
+* Primitive relationships between base, quote, settlement, margin, and reporting roles
+* Complete and incomplete instrument terms
+* Payoff and maturity classification
+* Amount-independent scenario keys
+* Opaque native identities qualified by neutral protocol domains
+* Canonical datapoint meanings and calculation lineage
+* Exact formulas whose inputs have provider-independent economic meaning
+* Wire schemas, validation, codecs, and conformance data
+
+== Excluded
+
+* Provider adapters and native field interpretation
+* Provider-specific identity definitions, discovery, and mappings
+* Provider and catalog coverage manifests
+* Network protocols and authentication
+* Configuration and environment discovery
+* Persistence, collection policy, scheduling, and runtime health
+* Service API and deployment policy
+
+An integrating system maps its own evidence into CDM values and retains ownership of that mapping.
+CDM does not inspect the identity of that system to decide an economic outcome.

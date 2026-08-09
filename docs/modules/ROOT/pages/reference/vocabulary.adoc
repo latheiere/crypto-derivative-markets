@@ -1,0 +1,6 @@
+= Generated vocabulary
+
+This page is generated from the installed Python definitions. CI fails when the checked-in rendering
+is stale.
+
+include::partial$generated-vocabulary.adoc[]

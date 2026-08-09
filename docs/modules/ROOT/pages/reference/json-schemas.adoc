@@ -1,0 +1,26 @@
+= JSON Schemas
+
+CDM ships JSON Schema Draft 2020-12 documents under `cdm/schemas/v1` in the installed wheel.
+
+[cols="2,2",options="header"]
+|===
+|Value |Schema identifier
+|Instrument descriptor |`urn:cdm:schema:instrument-descriptor:1`
+|Instrument reference |`urn:cdm:schema:instrument-reference:1`
+|Native identity selector |`urn:cdm:schema:native-identity-selector:1`
+|Instrument profile |`urn:cdm:schema:instrument-profile:1`
+|Instrument classification |`urn:cdm:schema:instrument-classification:1`
+|Instrument scenario |`urn:cdm:schema:instrument-scenario:1`
+|Descriptor assessment |`urn:cdm:schema:instrument-assessment:1`
+|Datapoint definition |`urn:cdm:schema:datapoint:1`
+|Measurement lineage |`urn:cdm:schema:measurement-lineage:1`
+|Open-interest value |`urn:cdm:schema:open-interest-value:1`
+|Funding sample |`urn:cdm:schema:funding-sample:1`
+|===
+
+Schemas use URNs as stable identifiers rather than assuming a hosting location. A validator resolving
+cross-schema references should register the mapping returned by `load_schemas()`.
+
+Objects and enumerations are closed. Exact decimals are canonical strings, and timestamps use
+canonical UTC representation. The Python decoder additionally reports structured code and path
+details for invalid input.

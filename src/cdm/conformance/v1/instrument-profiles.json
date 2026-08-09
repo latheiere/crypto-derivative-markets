@@ -1,0 +1,104 @@
+{
+  "vector_schema": "urn:cdm:conformance:1",
+  "schema_id": "urn:cdm:schema:instrument-profile:1",
+  "valid": [
+    {
+      "name": "linear open-ended profile",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-profile:1",
+        "instrument_kind": "perpetual_swap",
+        "contract_value": { "amount": "0.01", "unit": "base" },
+        "settlement": { "method": "cash", "asset_relationship": "quote" },
+        "margin_asset_relationship": "settlement",
+        "funding": { "mechanism": "periodic", "interval_seconds": 28800 }
+      },
+      "classification": {
+        "payoff_family": "linear",
+        "maturity_family": "open_ended"
+      }
+    },
+    {
+      "name": "inverse fixed-expiry profile",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-profile:1",
+        "instrument_kind": "future",
+        "contract_value": { "amount": "10", "unit": "quote" },
+        "settlement": { "method": "cash", "asset_relationship": "base" },
+        "margin_asset_relationship": "base",
+        "funding": { "mechanism": "none" }
+      },
+      "classification": {
+        "payoff_family": "inverse",
+        "maturity_family": "fixed_expiry"
+      }
+    },
+    {
+      "name": "quanto profile",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-profile:1",
+        "instrument_kind": "perpetual_swap",
+        "contract_value": { "amount": "1", "unit": "quote" },
+        "settlement": { "method": "cash", "asset_relationship": "third" },
+        "margin_asset_relationship": "settlement",
+        "funding": { "mechanism": "continuous" }
+      },
+      "classification": {
+        "payoff_family": "quanto",
+        "maturity_family": "open_ended"
+      }
+    },
+    {
+      "name": "other profile",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-profile:1",
+        "instrument_kind": "future",
+        "contract_value": { "amount": "1", "unit": "base" },
+        "settlement": { "method": "physical", "asset_relationship": "base" },
+        "margin_asset_relationship": "base",
+        "funding": { "mechanism": "none" }
+      },
+      "classification": {
+        "payoff_family": "other",
+        "maturity_family": "fixed_expiry"
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "periodic funding without interval",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-profile:1",
+        "instrument_kind": "perpetual_swap",
+        "contract_value": { "amount": "1", "unit": "base" },
+        "settlement": { "method": "cash", "asset_relationship": "quote" },
+        "margin_asset_relationship": "quote",
+        "funding": { "mechanism": "periodic" }
+      },
+      "error_code": "invalid_value"
+    },
+    {
+      "name": "fixed-expiry profile with funding",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-profile:1",
+        "instrument_kind": "future",
+        "contract_value": { "amount": "1", "unit": "base" },
+        "settlement": { "method": "cash", "asset_relationship": "quote" },
+        "margin_asset_relationship": "quote",
+        "funding": { "mechanism": "continuous" }
+      },
+      "error_code": "inconsistent_terms"
+    },
+    {
+      "name": "non-canonical contract value",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-profile:1",
+        "instrument_kind": "future",
+        "contract_value": { "amount": "1.0", "unit": "base" },
+        "settlement": { "method": "cash", "asset_relationship": "quote" },
+        "margin_asset_relationship": "quote",
+        "funding": { "mechanism": "none" }
+      },
+      "error_code": "invalid_decimal"
+    }
+  ]
+}

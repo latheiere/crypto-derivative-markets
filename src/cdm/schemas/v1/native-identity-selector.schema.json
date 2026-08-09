@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cdm:schema:native-identity-selector:1",
+  "title": "CDM native identity selector v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_id", "role", "namespace"],
+  "properties": {
+    "schema_id": { "const": "urn:cdm:schema:native-identity-selector:1" },
+    "role": {
+      "enum": [
+        "instrument",
+        "pair",
+        "underlying",
+        "index",
+        "settlement_asset",
+        "product_family",
+        "other"
+      ]
+    },
+    "namespace": {
+      "type": "string",
+      "pattern": "^(?:rest|websocket|fix|rpc)(?::[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*)*(?![\\s\\S])"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "vector_schema": "urn:cdm:conformance:1",
+  "schema_id": "urn:cdm:schema:instrument-scenario:1",
+  "valid": [
+    {
+      "name": "amount-independent linear scenario",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-scenario:1",
+        "descriptor_schema_id": "urn:cdm:schema:instrument-descriptor:1",
+        "classification_schema_id": "urn:cdm:schema:instrument-classification:1",
+        "instrument_kind": "perpetual_swap",
+        "contract_value_unit": "base",
+        "settlement_asset_relationship": "quote",
+        "payoff_family": "linear",
+        "maturity_family": "open_ended"
+      }
+    },
+    {
+      "name": "amount-independent quanto scenario",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-scenario:1",
+        "descriptor_schema_id": "urn:cdm:schema:instrument-descriptor:1",
+        "classification_schema_id": "urn:cdm:schema:instrument-classification:1",
+        "instrument_kind": "future",
+        "contract_value_unit": "quote",
+        "settlement_asset_relationship": "third",
+        "payoff_family": "quanto",
+        "maturity_family": "fixed_expiry"
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "scenario with inconsistent payoff",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-scenario:1",
+        "descriptor_schema_id": "urn:cdm:schema:instrument-descriptor:1",
+        "classification_schema_id": "urn:cdm:schema:instrument-classification:1",
+        "instrument_kind": "perpetual_swap",
+        "contract_value_unit": "base",
+        "settlement_asset_relationship": "quote",
+        "payoff_family": "inverse",
+        "maturity_family": "open_ended"
+      },
+      "error_code": "inconsistent_classification"
+    }
+  ]
+}

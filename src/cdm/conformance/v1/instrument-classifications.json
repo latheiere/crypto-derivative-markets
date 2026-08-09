@@ -1,0 +1,33 @@
+{
+  "vector_schema": "urn:cdm:conformance:1",
+  "schema_id": "urn:cdm:schema:instrument-classification:1",
+  "valid": [
+    {
+      "name": "linear open-ended classification",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-classification:1",
+        "payoff_family": "linear",
+        "maturity_family": "open_ended"
+      }
+    },
+    {
+      "name": "quanto fixed-expiry classification",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-classification:1",
+        "payoff_family": "quanto",
+        "maturity_family": "fixed_expiry"
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "unknown payoff family",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-classification:1",
+        "payoff_family": "unclassified",
+        "maturity_family": "open_ended"
+      },
+      "error_code": "invalid_enum"
+    }
+  ]
+}

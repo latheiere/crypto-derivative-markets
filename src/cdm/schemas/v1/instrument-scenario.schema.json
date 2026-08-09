@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cdm:schema:instrument-scenario:1",
+  "title": "CDM instrument scenario v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "descriptor_schema_id",
+    "classification_schema_id",
+    "instrument_kind",
+    "contract_value_unit",
+    "settlement_asset_relationship",
+    "payoff_family",
+    "maturity_family"
+  ],
+  "properties": {
+    "schema_id": { "const": "urn:cdm:schema:instrument-scenario:1" },
+    "descriptor_schema_id": { "const": "urn:cdm:schema:instrument-descriptor:1" },
+    "classification_schema_id": { "const": "urn:cdm:schema:instrument-classification:1" },
+    "instrument_kind": { "enum": ["perpetual_swap", "future"] },
+    "contract_value_unit": { "enum": ["base", "quote"] },
+    "settlement_asset_relationship": { "enum": ["base", "quote", "third"] },
+    "payoff_family": { "enum": ["linear", "inverse", "quanto", "other"] },
+    "maturity_family": { "enum": ["open_ended", "fixed_expiry"] }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "settlement_asset_relationship": { "const": "third" } } },
+      "then": { "properties": { "payoff_family": { "const": "quanto" } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "contract_value_unit": { "const": "base" },
+          "settlement_asset_relationship": { "const": "quote" }
+        },
+        "required": ["contract_value_unit", "settlement_asset_relationship"]
+      },
+      "then": { "properties": { "payoff_family": { "const": "linear" } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "contract_value_unit": { "const": "quote" },
+          "settlement_asset_relationship": { "const": "base" }
+        },
+        "required": ["contract_value_unit", "settlement_asset_relationship"]
+      },
+      "then": { "properties": { "payoff_family": { "const": "inverse" } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "contract_value_unit": { "const": "base" },
+          "settlement_asset_relationship": { "const": "base" }
+        },
+        "required": ["contract_value_unit", "settlement_asset_relationship"]
+      },
+      "then": { "properties": { "payoff_family": { "const": "other" } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "contract_value_unit": { "const": "quote" },
+          "settlement_asset_relationship": { "const": "quote" }
+        },
+        "required": ["contract_value_unit", "settlement_asset_relationship"]
+      },
+      "then": { "properties": { "payoff_family": { "const": "other" } } }
+    },
+    {
+      "if": { "properties": { "instrument_kind": { "const": "perpetual_swap" } } },
+      "then": { "properties": { "maturity_family": { "const": "open_ended" } } },
+      "else": { "properties": { "maturity_family": { "const": "fixed_expiry" } } }
+    }
+  ]
+}

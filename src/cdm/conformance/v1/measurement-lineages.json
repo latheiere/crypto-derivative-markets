@@ -1,0 +1,61 @@
+{
+  "vector_schema": "urn:cdm:conformance:1",
+  "schema_id": "urn:cdm:schema:measurement-lineage:1",
+  "valid": [
+    {
+      "name": "native measurement with canonical conversion",
+      "value": {
+        "schema_id": "urn:cdm:schema:measurement-lineage:1",
+        "output": {
+          "schema_id": "urn:cdm:schema:datapoint:1",
+          "kind": "open_interest.base_quantity",
+          "temporal_mode": "current",
+          "unit": "base_quantity"
+        },
+        "steps": [
+          { "kind": "native_reported" },
+          {
+            "kind": "canonical_conversion",
+            "method_id": "open_interest.contracts_to_base.linear.v1"
+          }
+        ]
+      }
+    },
+    {
+      "name": "formula-derived funding measurement",
+      "value": {
+        "schema_id": "urn:cdm:schema:measurement-lineage:1",
+        "output": {
+          "schema_id": "urn:cdm:schema:datapoint:1",
+          "kind": "funding.indicative_rate",
+          "temporal_mode": "current",
+          "unit": "rate_fraction"
+        },
+        "steps": [
+          { "kind": "provider_formula", "method_id": "funding.rate_formula.v1" }
+        ]
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "conversion without acquisition",
+      "value": {
+        "schema_id": "urn:cdm:schema:measurement-lineage:1",
+        "output": {
+          "schema_id": "urn:cdm:schema:datapoint:1",
+          "kind": "open_interest.base_quantity",
+          "temporal_mode": "current",
+          "unit": "base_quantity"
+        },
+        "steps": [
+          {
+            "kind": "canonical_conversion",
+            "method_id": "open_interest.contracts_to_base.linear.v1"
+          }
+        ]
+      },
+      "error_code": "invalid_lineage_order"
+    }
+  ]
+}

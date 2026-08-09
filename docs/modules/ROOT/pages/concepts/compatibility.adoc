@@ -1,0 +1,20 @@
+= Compatibility
+
+The Python distribution and wire schemas are versioned independently.
+
+Distribution releases follow Semantic Versioning. During the initial `0.x` series, incompatible
+Python API changes increment the minor version. A stable `1.x` API treats incompatible changes as a
+major release.
+
+Every wire value identifies an exact schema major with `schema_id`. Removing or renaming a field,
+changing its meaning or requirement, adding any field to a closed object even when optional, or
+changing a closed enumeration requires a new schema major. Closed-object consumers may reject an
+otherwise optional addition, so it is not treated as backward compatible.
+
+Consumers select supported schema identifiers explicitly. They should use dual-read or dual-write
+migrations when independently deployed producers and consumers cannot upgrade atomically. CDM never
+silently interprets an unsupported major as a supported one.
+
+Exactly one conformance vector set exists for every supported schema, with no orphan vector sets.
+Vectors ship with the wheel so producers and consumers can run the same valid and invalid cases
+without importing one another's runtime code.

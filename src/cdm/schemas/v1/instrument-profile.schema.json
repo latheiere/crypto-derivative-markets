@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cdm:schema:instrument-profile:1",
+  "title": "CDM instrument profile v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "instrument_kind",
+    "contract_value",
+    "settlement",
+    "margin_asset_relationship",
+    "funding"
+  ],
+  "properties": {
+    "schema_id": { "const": "urn:cdm:schema:instrument-profile:1" },
+    "instrument_kind": { "enum": ["perpetual_swap", "future"] },
+    "contract_value": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["amount", "unit"],
+      "properties": {
+        "amount": {
+          "type": "string",
+          "pattern": "^(?:0\\.[0-9]*[1-9]|[1-9][0-9]*(?:\\.[0-9]*[1-9])?)(?![\\s\\S])"
+        },
+        "unit": { "enum": ["base", "quote"] }
+      }
+    },
+    "settlement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "asset_relationship"],
+      "properties": {
+        "method": { "enum": ["cash", "physical"] },
+        "asset_relationship": { "enum": ["base", "quote", "third"] }
+      }
+    },
+    "margin_asset_relationship": {
+      "enum": ["base", "quote", "settlement", "third"]
+    },
+    "funding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mechanism"],
+      "properties": {
+        "mechanism": { "enum": ["none", "periodic", "continuous"] },
+        "interval_seconds": { "type": "integer", "minimum": 1 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "mechanism": { "const": "periodic" } } },
+          "then": { "required": ["interval_seconds"] },
+          "else": { "not": { "required": ["interval_seconds"] } }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "instrument_kind": { "const": "future" } } },
+      "then": {
+        "properties": {
+          "funding": {
+            "properties": { "mechanism": { "const": "none" } }
+          }
+        }
+      }
+    }
+  ]
+}

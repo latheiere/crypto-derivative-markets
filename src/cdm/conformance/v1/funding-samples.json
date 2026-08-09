@@ -1,0 +1,178 @@
+{
+  "vector_schema": "urn:cdm:conformance:1",
+  "schema_id": "urn:cdm:schema:funding-sample:1",
+  "valid": [
+    {
+      "name": "native indicative sample with unknown interval",
+      "value": {
+        "schema_id": "urn:cdm:schema:funding-sample:1",
+        "rate": "0.0001",
+        "kind": "indicative",
+        "observed_at": "2026-01-01T00:00:00Z",
+        "interval": { "kind": "unspecified" },
+        "lineage": {
+          "schema_id": "urn:cdm:schema:measurement-lineage:1",
+          "output": {
+            "schema_id": "urn:cdm:schema:datapoint:1",
+            "kind": "funding.indicative_rate",
+            "temporal_mode": "current",
+            "unit": "rate_fraction"
+          },
+          "steps": [{ "kind": "native_reported" }]
+        }
+      }
+    },
+    {
+      "name": "settled sample with observed window",
+      "value": {
+        "schema_id": "urn:cdm:schema:funding-sample:1",
+        "rate": "-0.0002",
+        "kind": "settled",
+        "observed_at": "2026-01-01T08:00:01Z",
+        "effective_at": "2026-01-01T08:00:00Z",
+        "interval": {
+          "kind": "observed_window",
+          "duration_seconds": 28800,
+          "window_start": "2026-01-01T00:00:00Z"
+        },
+        "lineage": {
+          "schema_id": "urn:cdm:schema:measurement-lineage:1",
+          "output": {
+            "schema_id": "urn:cdm:schema:datapoint:1",
+            "kind": "funding.settled_rate",
+            "temporal_mode": "settled",
+            "unit": "rate_fraction"
+          },
+          "steps": [{ "kind": "native_reported" }]
+        }
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "next sample without effective timestamp",
+      "value": {
+        "schema_id": "urn:cdm:schema:funding-sample:1",
+        "rate": "0",
+        "kind": "next",
+        "observed_at": "2026-01-01T00:00:00Z",
+        "interval": { "kind": "protocol_schedule" },
+        "lineage": {
+          "schema_id": "urn:cdm:schema:measurement-lineage:1",
+          "output": {
+            "schema_id": "urn:cdm:schema:datapoint:1",
+            "kind": "funding.next_rate",
+            "temporal_mode": "next",
+            "unit": "rate_fraction"
+          },
+          "steps": [{ "kind": "native_reported" }]
+        }
+      },
+      "error_code": "missing_effective_at"
+    },
+    {
+      "name": "signed zero rate",
+      "value": {
+        "schema_id": "urn:cdm:schema:funding-sample:1",
+        "rate": "-0",
+        "kind": "indicative",
+        "interval": { "kind": "unspecified" },
+        "lineage": {
+          "schema_id": "urn:cdm:schema:measurement-lineage:1",
+          "output": {
+            "schema_id": "urn:cdm:schema:datapoint:1",
+            "kind": "funding.indicative_rate",
+            "temporal_mode": "current",
+            "unit": "rate_fraction"
+          },
+          "steps": [{ "kind": "native_reported" }]
+        }
+      },
+      "error_code": "invalid_decimal"
+    },
+    {
+      "name": "decimal with trailing line break",
+      "value": {
+        "schema_id": "urn:cdm:schema:funding-sample:1",
+        "rate": "0.0001\n",
+        "kind": "indicative",
+        "interval": { "kind": "unspecified" },
+        "lineage": {
+          "schema_id": "urn:cdm:schema:measurement-lineage:1",
+          "output": {
+            "schema_id": "urn:cdm:schema:datapoint:1",
+            "kind": "funding.indicative_rate",
+            "temporal_mode": "current",
+            "unit": "rate_fraction"
+          },
+          "steps": [{ "kind": "native_reported" }]
+        }
+      },
+      "error_code": "invalid_decimal"
+    },
+    {
+      "name": "non-canonical timestamp precision",
+      "value": {
+        "schema_id": "urn:cdm:schema:funding-sample:1",
+        "rate": "0",
+        "kind": "indicative",
+        "observed_at": "2026-01-01T00:00:00.1Z",
+        "interval": { "kind": "unspecified" },
+        "lineage": {
+          "schema_id": "urn:cdm:schema:measurement-lineage:1",
+          "output": {
+            "schema_id": "urn:cdm:schema:datapoint:1",
+            "kind": "funding.indicative_rate",
+            "temporal_mode": "current",
+            "unit": "rate_fraction"
+          },
+          "steps": [{ "kind": "native_reported" }]
+        }
+      },
+      "error_code": "invalid_timestamp"
+    },
+    {
+      "name": "funding kind and lineage mismatch",
+      "value": {
+        "schema_id": "urn:cdm:schema:funding-sample:1",
+        "rate": "0",
+        "kind": "indicative",
+        "interval": { "kind": "unspecified" },
+        "lineage": {
+          "schema_id": "urn:cdm:schema:measurement-lineage:1",
+          "output": {
+            "schema_id": "urn:cdm:schema:datapoint:1",
+            "kind": "funding.next_rate",
+            "temporal_mode": "next",
+            "unit": "rate_fraction"
+          },
+          "steps": [{ "kind": "native_reported" }]
+        }
+      },
+      "error_code": "inconsistent_lineage"
+    },
+    {
+      "name": "observed window without duration",
+      "value": {
+        "schema_id": "urn:cdm:schema:funding-sample:1",
+        "rate": "0",
+        "kind": "indicative",
+        "interval": {
+          "kind": "observed_window",
+          "window_start": "2026-01-01T00:00:00Z"
+        },
+        "lineage": {
+          "schema_id": "urn:cdm:schema:measurement-lineage:1",
+          "output": {
+            "schema_id": "urn:cdm:schema:datapoint:1",
+            "kind": "funding.indicative_rate",
+            "temporal_mode": "current",
+            "unit": "rate_fraction"
+          },
+          "steps": [{ "kind": "native_reported" }]
+        }
+      },
+      "error_code": "inconsistent_interval"
+    }
+  ]
+}

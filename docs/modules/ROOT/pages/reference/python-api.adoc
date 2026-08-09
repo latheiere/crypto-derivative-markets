@@ -1,0 +1,55 @@
+= Python API
+
+== Descriptor operations
+
+`InstrumentDescriptorV1`:: Incomplete canonical economic metadata.
+`assess_instrument_descriptor()`:: Capability-specific completeness and consistency assessment.
+`classify_instrument_descriptor()`:: Payoff and maturity classification using only relevant fields.
+`instrument_scenario()`:: Amount-independent `InstrumentScenarioV1` for a descriptor or profile.
+
+== Native identity references
+
+`NativeIdentityV1`:: Opaque value qualified by a semantic role and validated protocol namespace.
+`InstrumentReferenceV1`:: Economic descriptor plus an optional ordered identity tuple.
+`NativeIdentitySelectorV1`:: Exact role-and-namespace selector.
+`select_native_identity()`:: Cardinality-safe selection returning `NativeIdentitySelectionV1` with
+`unique`, `missing`, or `ambiguous` status. Ambiguous selection never chooses by tuple order.
+
+`NativeIdentityNamespace` supports the protocol roots `rest`, `websocket`, `fix`, and `rpc`, with
+optional lowercase neutral scope segments separated by `:`. Standard values include instrument
+catalog and derivative-status REST scopes. Scopes describe protocol identity domains, never
+providers. Identity references do not participate in economic assessment, classification,
+scenarios, datapoints, or conversion.
+
+== Complete values
+
+`InstrumentProfileV1`:: Complete instrument economics.
+`InstrumentClassificationV1`:: Payoff and maturity result.
+`DataPointDefinitionV1`:: Datapoint kind, time semantics, unit, and denomination.
+`MeasurementLineageV1`:: Ordered origin and calculation steps.
+`OpenInterestValueV1`:: Non-negative contract count, base quantity, or denominated notional.
+`FundingSampleV1`:: Funding rate, source time evidence, interval evidence, and lineage.
+
+== Conversion
+
+`convert_open_interest()` accepts an open-interest value, target measure, and either a complete
+profile or incomplete descriptor. It returns `OpenInterestConversionV1` with `exact`,
+`precision_required`, `missing_input`, or `unmodeled` status. Path planning assesses only the
+instrument attributes and observations used by that path. Identity is resolved before instrument
+metadata, including identity in a settlement denomination.
+
+Exact arithmetic uses rational values internally and never consults the ambient `decimal` context.
+`exact` means the result has a finite base-ten expansion and can be represented without rounding.
+`precision_required` returns a reduced `ExactRatioV1`; the caller owns decimal precision, rounding,
+and any lineage step describing the rounded representation. Both outcomes retain ordered
+`ConversionFormula` identifiers where a formula was applied.
+
+== Codecs and resources
+
+`to_data()` / `from_data()`:: Strict JSON-compatible object codecs.
+`to_json()` / `from_json()`:: Deterministic JSON text codecs.
+`schema_ids()` / `load_schema()` / `load_schemas()`:: Installed JSON Schema resources.
+`conformance_vector_names()` / `load_conformance_vectors()`:: Installed portable test data.
+
+All public models are frozen dataclasses. Economic decimal values use `decimal.Decimal` in Python and
+canonical strings on the wire.

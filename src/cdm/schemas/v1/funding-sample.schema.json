@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cdm:schema:funding-sample:1",
+  "title": "CDM funding sample v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_id", "rate", "kind", "interval", "lineage"],
+  "properties": {
+    "schema_id": { "const": "urn:cdm:schema:funding-sample:1" },
+    "rate": {
+      "type": "string",
+      "pattern": "^(?:0|-?(?:0\\.[0-9]*[1-9]|[1-9][0-9]*(?:\\.[0-9]*[1-9])?))(?![\\s\\S])"
+    },
+    "kind": { "enum": ["indicative", "next", "settled"] },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{6})?Z(?![\\s\\S])"
+    },
+    "effective_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{6})?Z(?![\\s\\S])"
+    },
+    "interval": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "duration_seconds"],
+          "properties": {
+            "kind": { "const": "explicit_duration" },
+            "duration_seconds": { "type": "integer", "minimum": 1 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "duration_seconds", "window_start"],
+          "properties": {
+            "kind": { "const": "observed_window" },
+            "duration_seconds": { "type": "integer", "minimum": 1 },
+            "window_start": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{6})?Z(?![\\s\\S])"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind"],
+          "properties": {
+            "kind": { "enum": ["protocol_schedule", "unspecified"] }
+          }
+        }
+      ]
+    },
+    "lineage": { "$ref": "urn:cdm:schema:measurement-lineage:1" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "kind": { "enum": ["next", "settled"] } } },
+      "then": { "required": ["effective_at"] }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "indicative" } } },
+      "then": {
+        "properties": {
+          "lineage": {
+            "properties": {
+              "output": {
+                "properties": { "kind": { "const": "funding.indicative_rate" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "next" } } },
+      "then": {
+        "properties": {
+          "lineage": {
+            "properties": {
+              "output": {
+                "properties": { "kind": { "const": "funding.next_rate" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "settled" } } },
+      "then": {
+        "properties": {
+          "lineage": {
+            "properties": {
+              "output": {
+                "properties": { "kind": { "const": "funding.settled_rate" } }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

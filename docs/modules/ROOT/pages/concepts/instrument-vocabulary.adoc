@@ -1,0 +1,38 @@
+= Instrument vocabulary
+
+`InstrumentDescriptorV1` preserves incomplete canonical metadata. Optional nested terms distinguish
+a missing object from individual missing attributes; no defaults are introduced.
+
+`assess_instrument_descriptor()` evaluates one `InstrumentCapability`. Each capability declares the
+smallest neutral metadata set that affects its outcome. Payoff and maturity classification therefore
+does not depend on contract amount, settlement method, margin relationship, funding mechanism, or
+funding interval.
+
+`InstrumentProfileV1` is the complete form. It is appropriate when all terms are known, but it is
+not a prerequisite for an operation with fewer economic inputs.
+
+== Classification
+
+Payoff family is derived from contract-value unit and settlement-asset relationship:
+
+[cols="1,1,1",options="header"]
+|===
+|Contract-value unit |Settlement relationship |Payoff family
+|base |quote |linear
+|quote |base |inverse
+|either |third |quanto
+|remaining modeled combination |base or quote |other
+|===
+
+Maturity family is derived independently from lifecycle kind. `quanto` and `other` are explicit
+classifications; they are not approximated as `linear` or `inverse`.
+
+== Scenario keys
+
+`InstrumentScenarioV1` is the versioned amount-independent key for joining canonical catalog
+projections with acquisition capability declarations. It includes primitive relationships and their
+derived classification, together with the descriptor and classification schema identifiers.
+
+Exact contract amount, settlement method, margin, funding, provider mapping, and coverage status are
+not part of the scenario key.
+

@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cdm:schema:instrument-assessment:1",
+  "title": "CDM instrument descriptor assessment v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_id", "capability", "state", "issues"],
+  "properties": {
+    "schema_id": { "const": "urn:cdm:schema:instrument-assessment:1" },
+    "capability": {
+      "enum": [
+        "classification",
+        "open_interest_conversion",
+        "funding_mechanism",
+        "funding_interval",
+        "complete_profile"
+      ]
+    },
+    "state": { "enum": ["complete", "incomplete", "invalid"] },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "path", "message"],
+        "properties": {
+          "code": { "enum": ["missing_attribute", "inconsistent_terms"] },
+          "path": { "type": "string", "pattern": "^\\$\\." },
+          "message": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "profile": { "$ref": "urn:cdm:schema:instrument-profile:1" }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "state": { "const": "complete" },
+        "issues": { "maxItems": 0 }
+      }
+    },
+    {
+      "properties": {
+        "state": { "enum": ["incomplete", "invalid"] },
+        "issues": { "minItems": 1 }
+      },
+      "not": { "required": ["profile"] }
+    }
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": { "const": "complete" },
+          "capability": { "const": "complete_profile" }
+        },
+        "required": ["state", "capability"]
+      },
+      "then": { "required": ["profile"] },
+      "else": { "not": { "required": ["profile"] } }
+    }
+  ]
+}

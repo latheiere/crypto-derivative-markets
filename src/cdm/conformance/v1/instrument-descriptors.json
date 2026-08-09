@@ -1,0 +1,56 @@
+{
+  "vector_schema": "urn:cdm:conformance:1",
+  "schema_id": "urn:cdm:schema:instrument-descriptor:1",
+  "valid": [
+    {
+      "name": "empty descriptor",
+      "value": { "schema_id": "urn:cdm:schema:instrument-descriptor:1" },
+      "assessment_state": "incomplete",
+      "issue_paths": [
+        "$.instrument_kind",
+        "$.contract_value.amount",
+        "$.contract_value.unit",
+        "$.settlement.method",
+        "$.settlement.asset_relationship",
+        "$.margin_asset_relationship",
+        "$.funding.mechanism"
+      ]
+    },
+    {
+      "name": "complete descriptor",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-descriptor:1",
+        "instrument_kind": "perpetual_swap",
+        "contract_value": { "amount": "1", "unit": "base" },
+        "settlement": { "method": "cash", "asset_relationship": "quote" },
+        "margin_asset_relationship": "quote",
+        "funding": { "mechanism": "periodic", "interval_seconds": 14400 }
+      },
+      "assessment_state": "complete",
+      "issue_paths": []
+    },
+    {
+      "name": "inconsistent descriptor",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-descriptor:1",
+        "instrument_kind": "future",
+        "contract_value": { "amount": "1", "unit": "base" },
+        "settlement": { "method": "cash", "asset_relationship": "quote" },
+        "margin_asset_relationship": "quote",
+        "funding": { "mechanism": "continuous" }
+      },
+      "assessment_state": "invalid",
+      "issue_paths": ["$.funding.mechanism"]
+    }
+  ],
+  "invalid": [
+    {
+      "name": "unknown descriptor field",
+      "value": {
+        "schema_id": "urn:cdm:schema:instrument-descriptor:1",
+        "external_identifier": "opaque"
+      },
+      "error_code": "unknown_field"
+    }
+  ]
+}
